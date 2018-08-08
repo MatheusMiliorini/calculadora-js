@@ -5,7 +5,8 @@ calculadora.appendChild(resBoxDiv);
 
 var resBox = document.createElement('input');
 resBox.setAttribute('readOnly','true');
-resBox.type = 'number';
+resBox.type = 'text';
+resBox.id = "resBox";
 
 resBoxDiv.appendChild(resBox);
 
@@ -26,26 +27,33 @@ for (i = 0; i < 10; i++) {
         resBox.value = resBox.value + e.target.id;
     });
     calculadora.appendChild(botoes[i]);
+    if (i == 5) {
+        //Cria o botão de mais, menos e C aqui, só pra ficar certinho
+        var btnMais = criaBotao('+');
+        btnMais.addEventListener('click',function() {
+            exp += resBox.value + "+";
+            resBox.value = "";
+        });
+
+        var btnMenos = criaBotao('-');
+        btnMenos.addEventListener('click',function() {
+            exp += resBox.value + "-";
+            resBox.value = "";
+        })
+
+        var btnC = criaBotao('C');
+        btnC.addEventListener('click',function() {
+            resBox.value = "";
+        })
+        //Pula linha
+        calculadora.appendChild(document.createElement('br'));
+    }
+    
 }
 
-function criaBotao(txt) {
-    btn = document.createElement('button');
-    btn.innerText = txt;
-    calculadora.appendChild(btn);
-
-    return btn;
-}
-
-var btnMais = criaBotao('+');
-btnMais.addEventListener('click',function() {
-    exp += resBox.value + "+";
-    resBox.value = "";
-});
-
-var btnMenos = criaBotao('-');
-btnMenos.addEventListener('click',function() {
-    exp += resBox.value + "-";
-    resBox.value = "";
+var btnVirgual = criaBotao('.');
+    btnVirgual.addEventListener('click',function() {
+        resBox.value += ".";
 })
 
 var btnVezes = criaBotao('x');
@@ -65,11 +73,19 @@ var btnIgual = criaBotao('=');
 btnIgual.addEventListener('click',function() {
     exp += resBox.value
     resBox.value = eval(exp);
-    console.log(exp);
+    exp = "";
 });
 
-var btnLimpa = criaBotao('AC');
-btnLimpa.addEventListener('click',function() {
+var btnAC = criaBotao('AC');
+btnAC.addEventListener('click',function() {
     exp = "";
     resBox.value = "";
 })
+
+function criaBotao(txt) {
+    btn = document.createElement('button');
+    btn.innerText = txt;
+    calculadora.appendChild(btn);
+
+    return btn;
+}
