@@ -13,8 +13,8 @@ resBoxDiv.appendChild(resBox);
 var botoes = [];
 
 //Valores "cache" da calculadora
-var v1 = 0;
-var v2 = 0;
+var oldNum = null;
+var newNum = null;
 
 //Tipo de calculo que sera feito
 var acao = "";
@@ -39,59 +39,59 @@ function criaBotao(txt) {
 
 var btnMais = criaBotao('+');
 btnMais.addEventListener('click',function() {
-    if (acao != '') {
-        btnIgual.click();
-    } else {
-        v1 = resBox.value;
-        resBox.value = null;
-        acao = 'somar';
-    }
+    oldNum = resBox.value;
+    acao = 'somar';
+    resBox.value = '';
 });
 
 var btnMenos = criaBotao('-');
 btnMenos.addEventListener('click',function() {
-    v1 = resBox.value;
-    resBox.value = null;
+    oldNum = resBox.value;
     acao = 'subtrair';
+    resBox.value = '';
 })
 
 var btnVezes = criaBotao('x');
 btnVezes.addEventListener('click',function() {
-    v1 = resBox.value;
-    resBox.value = null;
+    oldNum = resBox.value;
     acao = 'multiplicar';
+    resBox.value = '';
 });
 
 var btnDiv = criaBotao('/');
 btnDiv.addEventListener('click',function() {
-    v1 = resBox.value;
-    resBox.value = null;
+    oldNum = resBox.value;
     acao = 'dividir';
+    resBox.value = '';
 });
 
 var btnIgual = criaBotao('=');
 btnIgual.addEventListener('click',function() {
-    v2 = resBox.value;
+    newNum = parseFloat(resBox.value);
     switch(acao) {
         case 'somar':
-            v1 = parseFloat(v1) + parseFloat(v2);
-            resBox.value = v1;
+            resBox.value = parseFloat(oldNum) + parseFloat(newNum);
+            oldNum = resBox.value;
             break;
         case 'subtrair':
-            resBox.value = parseFloat(v1) - parseFloat(v2);
+            resBox.value = parseFloat(oldNum) - parseFloat(newNum);
+            oldNum = resBox.value;
             break;
         case 'multiplicar':
-            resBox.value = parseFloat(v1) * parseFloat(v2);
+            resBox.value = parseFloat(oldNum) * parseFloat(newNum);
+            oldNum = resBox.value;
             break;
         case 'dividir':
-            resBox.value = parseFloat(v1) / parseFloat(v2);
+            resBox.value = parseFloat(oldNum) / parseFloat(newNum);
+            oldNum = resBox.value;
             break;
     }
 });
 
 var btnLimpa = criaBotao('AC');
 btnLimpa.addEventListener('click',function() {
-    v1 = 0;
-    v2 = 0;
-    resBox.value = '';
+    oldNum = null;
+    newNum = null;
+    acao = '';
+    resBox.value = null;
 })
